@@ -17,16 +17,17 @@
 
 
 d3.json("samples.json").then(function (data) {
-    console.log(data.samples);
-   /* var microbesValues = data.samples.map(x => x.sample_values);
-    var microbesID = data.samples.map(x => x.otu_ids);
-    var microbesSpiecies = data.samples.map(x => x.otu_labels);
-    console.log(microbesID);
-    console.log(microbesSpiecies);
-    console.log(microbesValues);*/
-    
-    /*var sorted = data.samples.sort(function compareFunction(firstObj, secondObj) {
-        return firstObj.sample_values - secondObj.sample_values;
+        data.samples.sort(function compareFunction(firstObj, secondObj) {
+                return firstObj.sample_values - secondObj.sample_values;
         });
-        console.log(sorted)*/
-  });
+        console.log(data.samples);
+
+        var microbesID = data.samples.map(x => x.otu_ids.slice(0, 10));
+        var microbesSpiecies = data.samples.map(x => x.otu_labels.slice(0, 10));
+        var microbesValues = data.samples.map(x => x.sample_values.slice(0, 10));
+        console.log(microbesID);
+        console.log(microbesSpiecies);
+        console.log(microbesValues);
+
+
+});
