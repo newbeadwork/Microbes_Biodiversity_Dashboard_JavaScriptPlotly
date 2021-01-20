@@ -16,7 +16,6 @@ d3.selectAll("#selDataset").on("change", function () {
 );
 
 
-
 function optionChanged(dataset) {
 
         
@@ -29,7 +28,6 @@ function optionChanged(dataset) {
                 buildTable(chosenMetadata);
                 buildGauge(chosenMetadata);
         });
-
 }
 
 function buildBubble(filteredData) {
@@ -55,7 +53,7 @@ function buildBubble(filteredData) {
         }];
 
         var layoutBubble = {
-                title: "OTUs found in that individual",
+                title: "Microorganisms found on the test subject",
                 height: 1000,
                 width: 1000
 
@@ -79,7 +77,6 @@ function buildBar(filteredData) {
                 x: microbesValuesTop10,
                 y: microbesIDNames,
                 text: microbesSpieciesTop10,
-                name: "Something",
                 type: "bar",
                 orientation: "h",
                 marker: {
@@ -89,7 +86,7 @@ function buildBar(filteredData) {
         }];
 
         var layoutBar = {
-                title: "top 10 OTUs found in that individual",
+                title: "Top 10 microorganisms found on the test subject",
 
         };
 
