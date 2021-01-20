@@ -1,62 +1,11 @@
 
-/*d3.json("samples.json").then((data) => {
-
-        data.names.forEach(name => {
-                d3.select("#selDataset").append("option").text(name);
-        })
-})*/
 function init() {
         d3.json("samples.json").then((data) => {
                 data.names.forEach(name => {
                         d3.select("#selDataset").append("option").text(name);
                 });
                 optionChanged("940");
-                /*var board = d3.select("#sample-metadata");
-
-                board.html("");
-
-
-
-                var chosenMetadata = data.metadata.filter(x => x.id == "940");
-                console.log(chosenMetadata);
-
-                Object.entries(chosenMetadata[0]).forEach(([key, value]) => {
-                        board.append("h4").text(`${key}: ${value}`);
-
-                });*/
-
-
-               /* var filteredData = data.samples.filter(x => x.id === "940");
-                filteredData.sort(function compareFunction(firstObj, secondObj) {
-                        return firstObj.sample_values - secondObj.sample_values;
-                });
-
-                var microbesID = filteredData.map(x => x.otu_ids.slice(0, 10));
-                var microbesSpiecies = filteredData.map(x => x.otu_labels.slice(0, 10));
-                var microbesValues = filteredData.map(x => x.sample_values.slice(0, 10));
-                console.log(filteredData);
-                console.log(microbesID[0]);
-                console.log(microbesSpiecies[0]);
-                console.log(microbesValues[0]);
-
-
-                var trace1 = {
-                        x: microbesValues[0],
-                        y: microbesID[0],
-                        text: microbesSpiecies[0],
-                        name: "Something",
-                        type: "bar",
-                        orientation: "h"
-                };
-
-                var data = [trace1];
-
-                var layout = {
-                        title: "OTUs found in that individual",
-
-                };
-
-                Plotly.newPlot("bar", data, layout);*/
+                
         });
 }
 d3.selectAll("#selDataset").on("change", function () {
@@ -73,7 +22,6 @@ function optionChanged(dataset) {
         
         d3.json("samples.json").then((data) => {
                 var filteredData = data.samples.filter(x => x.id === dataset);
-                console.log(filteredData);
                 var chosenMetadata = data.metadata.filter(x => x.id == dataset)[0];
 
                 buildBubble(filteredData);
@@ -100,7 +48,7 @@ function buildBubble(filteredData) {
                 mode: 'markers',
                 marker: {
                         color: microbesID,
-                        colorscale: [[0, 'rgb(239, 177, 40)'], [1, 'rgb(0, 0, 255)']],
+                        colorscale: [[0, 'rgb(239, 150, 40)'], [1, 'rgb(0, 0, 255)']],
                         size: microbesValues
                         
                 }
@@ -108,7 +56,7 @@ function buildBubble(filteredData) {
 
         var layoutBubble = {
                 title: "OTUs found in that individual",
-                height: 600,
+                height: 1000,
                 width: 1000
 
 
@@ -135,7 +83,7 @@ function buildBar(filteredData) {
                 type: "bar",
                 orientation: "h",
                 marker: {
-                        color: 'rgb(142,124,195)'
+                        color: "rgb(142,124,195)"
                       }
 
         }];
@@ -156,7 +104,7 @@ function buildTable(chosenMetadata) {
         board.html("");
 
         Object.entries(chosenMetadata).forEach(([key, value]) => {
-                board.append("h4").text(`${key}: ${value}`);
+                board.append("h5").text(`${key}: ${value}`);
 
         });
 
@@ -172,17 +120,18 @@ function buildGauge(chosenMetadata) {
                   mode: "gauge+number",
                   
                   gauge: {
-                    axis: { range: [null, 10] },
+                    axis: { range: [null, 9] },
+                    bar: { color: "rgb(0, 142, 140)" },
                     steps: [
-                      { range: [0, 1], color: "lightgray" },
-                      { range: [1, 2], color: "lightgray" },
-                      { range: [2, 3], color: "lightgray" },
-                      { range: [3, 4], color: "lightgray" },
-                      { range: [4, 5], color: "lightgray" },
-                      { range: [5, 6], color: "lightgray" },
-                      { range: [6, 7], color: "lightgray" },
-                      { range: [7, 8], color: "lightgray" },
-                      { range: [8, 9], color: "gray" }
+                      { range: [0, 1], color: "rgb(239, 230, 100)" },
+                      { range: [1, 2], color: "rgb(239, 220, 100)" },
+                      { range: [2, 3], color: "rgb(239, 210, 100)" },
+                      { range: [3, 4], color: "rgb(239, 200, 100)" },
+                      { range: [4, 5], color: "rgb(239, 190, 100)" },
+                      { range: [5, 6], color: "rgb(239, 180, 100)" },
+                      { range: [6, 7], color: "rgb(239, 170, 100)" },
+                      { range: [7, 8], color: "rgb(239, 160, 100)" },
+                      { range: [8, 9], color: "rgb(239, 150, 100)" }
                     ],
                     
                   }
