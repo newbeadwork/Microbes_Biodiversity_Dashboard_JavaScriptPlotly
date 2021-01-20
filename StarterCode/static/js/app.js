@@ -13,19 +13,19 @@ function init() {
                 var board = d3.select("#sample-metadata");
 
                 board.html("");
-        
-                
-        
-                        var chosenMetadata = data.metadata.filter(x => x.id == "940");
-                        console.log(chosenMetadata);
-        
-                        Object.entries(chosenMetadata[0]).forEach(([key, value]) => {
-                                board.append("h4").text(`${key}: ${value}`);
-                                
-                        });
-        
-                
-                var filteredData = data.samples.filter(x => x.id === "940");
+
+
+
+                var chosenMetadata = data.metadata.filter(x => x.id == "940");
+                console.log(chosenMetadata);
+
+                Object.entries(chosenMetadata[0]).forEach(([key, value]) => {
+                        board.append("h4").text(`${key}: ${value}`);
+
+                });
+
+
+               /* var filteredData = data.samples.filter(x => x.id === "940");
                 filteredData.sort(function compareFunction(firstObj, secondObj) {
                         return firstObj.sample_values - secondObj.sample_values;
                 });
@@ -55,8 +55,8 @@ function init() {
 
                 };
 
-                Plotly.newPlot("bar", data, layout);
-        }); 
+                Plotly.newPlot("bar", data, layout);*/
+        });
 }
 d3.selectAll("#selDataset").on("change", optionChanged);
 
@@ -66,80 +66,94 @@ function optionChanged() {
 
         var dataset = d3.select(this).property("value");
         d3.json("samples.json").then((data) => {
-            var filteredData = data.samples.filter(x => x.id === dataset);
-            filteredData.sort(function compareFunction(firstObj, secondObj) {
-                return firstObj.sample_values - secondObj.sample_values;
-            });
-            var chosenMetadata = data.metadata.filter(x => x.id == dataset)[0];
-            buildPlot(filteredData);
-            buildTable(chosenMetadata);
+                var filteredData = data.samples.filter(x => x.id === dataset);
+                console.log(filteredData);
+                var chosenMetadata = data.metadata.filter(x => x.id == dataset)[0];
+
+                buildBubble(filteredData);
+                buildBar(filteredData);
+                buildTable(chosenMetadata);
         });
-    
-    }
-    
-    function buildPlot(filteredData) {
-    
-    
+
+}
+
+function buildBubble(filteredData) {
+
         var microbesID = filteredData.map(x => x.otu_ids)[0];
         var microbesSpiecies = filteredData.map(x => x.otu_labels)[0];
         var microbesValues = filteredData.map(x => x.sample_values)[0];
-       console.log(microbesID);
-        var microbesIDtop10 = microbesID.slice(0, 10);
-        var microbesSpieciesTop10 = microbesSpiecies.slice(0, 10);
-        var microbesValuesTop10 = microbesValues.slice(0, 10);
+        console.log(microbesID);
+        console.log(microbesValues);
+        
+        var dataBubble = [{
+                
+                x: microbesID,
+                y: microbesValues,
+                text: microbesSpiecies,
+                mode: 'markers',
+                marker: {
+                        color: microbesID,
+                        colorscale: [[0, 'rgb(239, 177, 40)'], [1, 'rgb(0, 0, 255)']],
+                        size: microbesValues
+                        //sizeif: 0.2,
+                        //sizemin: Math.min(microbesValues),
+                        //sizemode: 'area'
+                }
+        }];
+
+        var layoutBubble = {
+                title: "OTUs found in that individual",
+                height: 600,
+                width: 1000
+
+
+        };
+
+        Plotly.newPlot("bubble", dataBubble, layoutBubble);
+}
+function buildBar(filteredData) {
+        
+        var microbesIDtop10 = filteredData.map(x => x.otu_ids.slice(0, 10))[0];
+        var microbesSpieciesTop10 = filteredData.map(x => x.otu_labels.slice(0, 10))[0];
+        var microbesValuesTop10 = filteredData.map(x => x.sample_values.slice(0, 10))[0];
         console.log(microbesValuesTop10);
-        var names = [];
+        var microbesIDNames = [];
         microbesIDtop10.forEach(x => {
-                 names.push(`OTU ${x}`);
+                microbesIDNames.push(`OTU ${x}`);
         })
         var dataBar = [{
-    
-            x: microbesValuesTop10,
-            y: names,
-            text: microbesSpieciesTop10,
-            name: "Something",
-            type: "bar",
-            orientation: "h"
-    
+
+                x: microbesValuesTop10,
+                y: microbesIDNames,
+                text: microbesSpieciesTop10,
+                name: "Something",
+                type: "bar",
+                orientation: "h",
+                marker: {
+                        color: 'rgb(142,124,195)'
+                      }
+
         }];
-    
+
         var layoutBar = {
-            title: "top 10 OTUs found in that individual",
-    
+                title: "top 10 OTUs found in that individual",
+
         };
-    
+
         Plotly.newPlot("bar", dataBar, layoutBar);
-    
-        var dataBubble = [{
-            x: microbesValues,
-            y: microbesID,
-            text: microbesSpiecies,
-            mode: 'markers',
-            marker: {
-                size: microbesValues
-            }
-        }];
-    
-        var layoutBubble = {
-            title: "OTUs found in that individual",
-    
-        };
-    
-        Plotly.newPlot("bubble", dataBubble, layoutBubble);
-    
-    }
-    
-    function buildTable(chosenMetadata) {
-    
+
+}
+
+function buildTable(chosenMetadata) {
+
         var board = d3.select("#sample-metadata");
-    
+
         board.html("");
-    
+
         Object.entries(chosenMetadata).forEach(([key, value]) => {
-            board.append("h4").text(`${key}: ${value}`);
-    
+                board.append("h4").text(`${key}: ${value}`);
+
         });
-    
-    
-    }
-    init();
+
+}
+init();
