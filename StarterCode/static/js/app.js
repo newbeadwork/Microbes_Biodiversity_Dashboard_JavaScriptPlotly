@@ -8,6 +8,57 @@ d3.json("samples.json").then((data) => {
 })
 d3.selectAll("#selDataset").on("change", optionChanged);
 
+function init() {
+        d3.json("samples.json").then((data) => {
+                var board = d3.select("#sample-metadata");
+
+                board.html("");
+        
+                
+        
+                        var chosenMetadata = data.metadata.filter(x => x.id == "940");
+                        console.log(chosenMetadata);
+        
+                        Object.entries(chosenMetadata[0]).forEach(([key, value]) => {
+                                board.append("h4").text(`${key}: ${value}`);
+                                
+                        });
+        
+                
+                var filteredData = data.samples.filter(x => x.id === "940");
+                filteredData.sort(function compareFunction(firstObj, secondObj) {
+                        return firstObj.sample_values - secondObj.sample_values;
+                });
+
+                var microbesID = filteredData.map(x => x.otu_ids.slice(0, 10));
+                var microbesSpiecies = filteredData.map(x => x.otu_labels.slice(0, 10));
+                var microbesValues = filteredData.map(x => x.sample_values.slice(0, 10));
+                console.log(filteredData);
+                console.log(microbesID[0]);
+                console.log(microbesSpiecies[0]);
+                console.log(microbesValues[0]);
+
+
+                var trace1 = {
+                        x: microbesValues[0],
+                        y: microbesID[0],
+                        text: microbesSpiecies[0],
+                        name: "Something",
+                        type: "bar",
+                        orientation: "h"
+                };
+
+                var data = [trace1];
+
+                var layout = {
+                        title: "OTUs found in that individual",
+
+                };
+
+                Plotly.newPlot("bar", data, layout);
+        }); 
+}
+
 function optionChanged() {
 
         var dataset = d3.select(this).property("value");
@@ -115,3 +166,4 @@ function buildBubble(dataset) {
 
 
 }
+init();
