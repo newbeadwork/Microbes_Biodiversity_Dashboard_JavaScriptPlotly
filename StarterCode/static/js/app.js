@@ -10,7 +10,8 @@ function init() {
                 data.names.forEach(name => {
                         d3.select("#selDataset").append("option").text(name);
                 });
-                var board = d3.select("#sample-metadata");
+                optionChanged("940");
+                /*var board = d3.select("#sample-metadata");
 
                 board.html("");
 
@@ -22,7 +23,7 @@ function init() {
                 Object.entries(chosenMetadata[0]).forEach(([key, value]) => {
                         board.append("h4").text(`${key}: ${value}`);
 
-                });
+                });*/
 
 
                /* var filteredData = data.samples.filter(x => x.id === "940");
@@ -58,13 +59,18 @@ function init() {
                 Plotly.newPlot("bar", data, layout);*/
         });
 }
-d3.selectAll("#selDataset").on("change", optionChanged);
-
-
-
-function optionChanged() {
-
+d3.selectAll("#selDataset").on("change", function () {
         var dataset = d3.select(this).property("value");
+        optionChanged(dataset);
+        }
+
+);
+
+
+
+function optionChanged(dataset) {
+
+        
         d3.json("samples.json").then((data) => {
                 var filteredData = data.samples.filter(x => x.id === dataset);
                 console.log(filteredData);
@@ -156,15 +162,7 @@ function buildTable(chosenMetadata) {
 
 }
 function buildGauge(chosenMetadata) {
-        /*var dataGauge = [
-                {
-                        domain: { x: [0, 1], y: [0, 1] },
-                        value: chosenMetadata.wfreq,
-                        title: { text: "Belly Button Washing Frequency (scrubs per week)" },
-                        type: "indicator",
-                        mode: "gauge+number"
-                }
-        ];*/
+       
         var dataGauge = [
                 {
                   domain: { x: [0, 1], y: [0, 1] },
