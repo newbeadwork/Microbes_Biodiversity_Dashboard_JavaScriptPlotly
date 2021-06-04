@@ -60,7 +60,7 @@ function buildBubble(filteredData) {
 
         var layoutBubble = {
                 title: "Microorganisms found on the test subject",
-                height: 1000,
+                height: 550,
                 width: 1000
         };
 
@@ -117,7 +117,7 @@ function buildGauge(chosenMetadata) {
                 {
                         domain: { x: [0, 1], y: [0, 1] },
                         value: chosenMetadata.wfreq,
-                        title: { text: "Belly Button Washing Frequency (scrubs per week)" },
+                        title: { text: "Belly Button Washing Frequency (per week)" },
                         type: "indicator",
                         mode: "gauge+number",
                         gauge: {
@@ -137,7 +137,7 @@ function buildGauge(chosenMetadata) {
                         }
                 }
         ];
-        var layoutGauge = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+        var layoutGauge = { width: 500, height: 400, margin: { t: 0, b: 0 } };
         Plotly.newPlot("gauge", dataGauge, layoutGauge);
 }
 
